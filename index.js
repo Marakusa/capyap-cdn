@@ -54,6 +54,28 @@ app.get('/:folder/:file', (req, res) => {
     }
 });
 
+app.get('/:folder', (req, res) => {
+    try {
+        if (!checkApiKey(req, res)) return;
+        
+        const dirPath = path.resolve(path.normalize(path.join(safeBase, req.params.folder)));
+
+        if (!dirPath.startsWith(safeBase)) {
+            return res.status(400).json({ error: 'Invalid path' });
+        }
+
+        if (fs.existsSync(dirPath)) {
+            const files = fs.readdirSync(dirPath);
+            res.json({ files });
+        } else {
+            res.status(404).json({ error: 'Directory not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.head('/:folder/:file', (req, res) => {
     try {
         if (!checkApiKey(req, res)) return;
@@ -172,6 +194,28 @@ app.delete('/:folder/:file', (req, res) => {
             res.json({ message: 'File deleted successfully' });
         } else {
             res.status(404).json({ error: 'File not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.delete('/:folder', (req, res) => {
+    try {
+        if (!checkApiKey(req, res)) return;
+        
+        const dirPath = path.resolve(path.normalize(path.join(safeBase, req.params.folder)));
+
+        if (!dirPath.startsWith(safeBase)) {
+            return res.status(400).json({ error: 'Invalid path' });
+        }
+
+        if (fs.existsSync(dirPath)) {
+            fs.rmdirSync(dirPath, { recursive: true, force: true });
+            res.json({ message: 'Directory deleted successfully' });
+        } else {
+            res.status(404).json({ error: 'Directory not found' });
         }
     } catch (err) {
         console.error(err);

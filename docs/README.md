@@ -68,6 +68,31 @@ curl -X GET http://localhost:3000/images/logo.png \
 
 ---
 
+## **GET** `/:folder`
+
+- Returns the requested files from a directory if it exists.
+
+**Curl Example**:
+```bash
+curl -X GET http://localhost:3000/images \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+**Success Response**:
+```json
+{ "files": [ "test.png", "demo.jpg" ] }
+```
+
+**Error Responses**:
+```json
+{ "error": "Forbidden" }
+{ "error": "Invalid path" }
+{ "error": "File not found" }
+{ "error": "Internal Server Error" }
+```
+
+---
+
 ## **HEAD** `/:folder/:file`
 
 - Returns file information in headers without the file body.
@@ -133,6 +158,31 @@ curl -X DELETE http://localhost:3000/images/logo.png \
 { "error": "Forbidden" }
 { "error": "Invalid path" }
 { "error": "File not found" }
+{ "error": "Internal Server Error" }
+```
+
+---
+
+## **DELETE** `/:folder`
+
+- Deletes the requested directory.
+
+**Curl Example**:
+```bash
+curl -X DELETE http://localhost:3000/images \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+**Success Response**:
+```json
+{ "message": "Directory deleted successfully" }
+```
+
+**Error Responses**:
+```json
+{ "error": "Forbidden" }
+{ "error": "Invalid path" }
+{ "error": "Directory not found" }
 { "error": "Internal Server Error" }
 ```
 
