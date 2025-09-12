@@ -9,9 +9,7 @@ x-api-key: YOUR_API_KEY
 
 ---
 
-## 1. Upload a File
-
-**POST** `/:folder/:file`
+## **POST** `/:folder/:file`
 
 - Uploads a file to a specific folder with the provided filename.
 - Max file size: 10 MB
@@ -50,9 +48,7 @@ curl -X POST http://localhost:3000/images/logo.png \
 
 ---
 
-## 2. Download a File
-
-**GET** `/:folder/:file`
+## **GET** `/:folder/:file`
 
 - Returns the requested file if it exists.
 
@@ -72,9 +68,7 @@ curl -X GET http://localhost:3000/images/logo.png \
 
 ---
 
-## 3. Get File Metadata
-
-**HEAD** `/:folder/:file`
+## **HEAD** `/:folder/:file`
 
 - Returns file information in headers without the file body.
 - Headers returned:
@@ -99,9 +93,7 @@ curl -I http://localhost:3000/images/logo.png \
 
 ---
 
-## 4. Get Folder Metadata (total size)
-
-**HEAD** `/:folder`
+## **HEAD** `/:folder`
 
 - Returns `Content-Length` header with total size of all files in the folder.
 
@@ -121,9 +113,7 @@ curl -I http://localhost:3000/images \
 
 ---
 
-## 5. Delete a File
-
-**DELETE** `/:folder/:file`
+## **DELETE** `/:folder/:file`
 
 - Deletes the requested file.
 
