@@ -48,6 +48,39 @@ curl -X POST http://localhost:3000/images/logo.png \
 
 ---
 
+## **POST** `/:folder`
+
+- Creates a folder with the provided folder name.
+
+**Headers**:
+```
+x-api-key: YOUR_API_KEY
+Content-Type: multipart/form-data
+```
+
+**Parameters**:  
+- `:folder` → target folder name
+
+**Curl Example**:
+```bash
+curl -X POST http://localhost:3000/images \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+**Success Response**:
+```json
+{ "message": "Directory created successfully" }
+{ "message": "Directory already exists" }
+```
+
+**Error Responses**:
+```json
+{ "error": "Forbidden" }
+{ "error": "Internal Server Error" }
+```
+
+---
+
 ## **GET** `/:folder/:file`
 
 - Returns the requested file if it exists.

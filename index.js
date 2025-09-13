@@ -179,6 +179,28 @@ app.post('/:folder/:file', (req, res) => {
     }
 });
 
+app.post('/:folder', (req, res) => {
+    try {
+        if (!checkApiKey(req, res)) return;
+
+        const dirPath = path.resolve(path.normalize(path.join(safeBase, req.params.folder)));
+
+        if (!dirPath.startsWith(safeBase)) {
+            return res.status(400).json({ error: 'Invalid path' });
+        }
+
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath, { recursive: true });
+            res.json({ message: 'Directory created successfully' });
+        } else {
+            res.status(200).json({ message: 'Directory already exists' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.delete('/:folder/:file', (req, res) => {
     try {
         if (!checkApiKey(req, res)) return;
