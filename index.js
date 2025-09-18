@@ -33,49 +33,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.enable('trust proxy');
 
-app.get('/:folder/:file', (req, res) => {
-    try {
-        if (!checkApiKey(req, res)) return;
-        
-        const filePath = path.resolve(path.normalize(path.join(safeBase, req.params.folder, req.params.file)));
-
-        if (!filePath.startsWith(safeBase)) {
-            return res.status(400).json({ error: 'Invalid path' });
-        }
-
-        if (fs.existsSync(filePath)) {
-            res.sendFile(filePath, { headers: { 'Cache-Control': 'public, max-age=31536000' } });
-        } else {
-            res.status(404).json({ error: 'File not found' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-app.get('/:folder', (req, res) => {
-    try {
-        if (!checkApiKey(req, res)) return;
-        
-        const dirPath = path.resolve(path.normalize(path.join(safeBase, req.params.folder)));
-
-        if (!dirPath.startsWith(safeBase)) {
-            return res.status(400).json({ error: 'Invalid path' });
-        }
-
-        if (fs.existsSync(dirPath)) {
-            const files = fs.readdirSync(dirPath);
-            res.json({ files });
-        } else {
-            res.status(404).json({ error: 'Directory not found' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
 app.head('/:folder/:file', (req, res) => {
     try {
         if (!checkApiKey(req, res)) return;
@@ -133,6 +90,49 @@ app.head('/:folder', (req, res) => {
             res.status(200).end();
         } else {
             res.status(404).json({ error: 'File not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/:folder/:file', (req, res) => {
+    try {
+        if (!checkApiKey(req, res)) return;
+        
+        const filePath = path.resolve(path.normalize(path.join(safeBase, req.params.folder, req.params.file)));
+
+        if (!filePath.startsWith(safeBase)) {
+            return res.status(400).json({ error: 'Invalid path' });
+        }
+
+        if (fs.existsSync(filePath)) {
+            res.sendFile(filePath, { headers: { 'Cache-Control': 'public, max-age=31536000' } });
+        } else {
+            res.status(404).json({ error: 'File not found' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/:folder', (req, res) => {
+    try {
+        if (!checkApiKey(req, res)) return;
+        
+        const dirPath = path.resolve(path.normalize(path.join(safeBase, req.params.folder)));
+
+        if (!dirPath.startsWith(safeBase)) {
+            return res.status(400).json({ error: 'Invalid path' });
+        }
+
+        if (fs.existsSync(dirPath)) {
+            const files = fs.readdirSync(dirPath);
+            res.json({ files });
+        } else {
+            res.status(404).json({ error: 'Directory not found' });
         }
     } catch (err) {
         console.error(err);
