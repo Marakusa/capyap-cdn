@@ -12,6 +12,9 @@ const safeBase = path.resolve(process.env.FILES_DIR || path.resolve(__dirname, '
 const allowedExtensions = ['.gif', '.jpg', '.png'];
 const allowedMimeTypes = ['image/gif', 'image/jpeg', 'image/png'];
 
+// Max allowed file size
+const MAX_FILE_SIZE = 12 * 1024 * 1024;
+
 // File filter
 function fileFilter(req, file, cb) {
     const ext = path.extname(file.originalname).toLowerCase();
@@ -164,7 +167,7 @@ app.post('/:folder/:file', (req, res) => {
         const upload = multer({
             storage,
             fileFilter,
-            limits: { fileSize: 10 * 1024 * 1024 } // 10 MB
+            limits: { fileSize: MAX_FILE_SIZE }
         });
 
         upload.single('file')(req, res, (err) => {
